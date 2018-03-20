@@ -1,0 +1,54 @@
+<app-loading [condition]="isLoading"></app-loading>
+
+<app-toast [message]="toast.message"></app-toast>
+
+<div class="card mb-3" *ngIf="!isLoading">
+  <h4 class="card-header">Current domains for {{auth.currentUser.username}}</h4>
+  <div class="card-body">
+    <table class="table table-bordered">
+      <thead class="thead-light">
+        <tr>
+          <th scope="col">Domain Name</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody *ngIf="domains.length === 0">
+        <tr>
+          <td colspan="4">There are no domains in the DB. Add a new domain below.</td>
+        </tr>
+      </tbody>
+      <tbody *ngIf="!isEditing">
+        <ng-container *ngFor="let domain of domains">
+          <tr *ngIf="domain.user===auth.currentUser.username">
+            <td>{{domain.domainName}}</td>
+            <td>
+              <button class="btn btn-sm btn-primary" (click)="enableEditing(domain)"><i class="fa fa-pencil"></i> Edit</button>
+              <button class="btn btn-sm btn-danger" (click)="deleteDomain(domain)"><i class="fa fa-trash"></i> Delete</button>
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
+      <tbody *ngIf="isEditing">
+        <tr>
+          <td colspan="4">
+            <form class="form-inline" #form="ngForm" (ngSubmit)="editDomain(domain)">
+              <input class="form-control mr-2" type="text" name="domainName" [(ngModel)]="domain.domainName" placeholder="Domain Name" required>
+              <button class="btn btn-sm btn-primary mr-2" type="submit" [disabled]="!form.form.valid"><i class="fa fa-floppy-o"></i> Save</button>
+              <button class="btn btn-sm btn-warning" (click)="cancelEditing()"><i class="fa fa-times"></i> Cancel</button>
+            </form>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="card" *ngIf="!isEditing">
+  <h4 class="card-header">Add new domain</h4>
+  <div class="card-body">
+    <form class="form-inline" [formGroup]="addDomainForm" (ngSubmit)="addDomain()">
+      <input class="form-control mr-2" type="text" name="domainName" formControlName="domainName" placeholder="Domain Name">
+      <button class="btn btn-primary" type="submit" [disabled]="!addDomainForm.valid"><i class="fa fa-floppy-o"></i> Add</button>
+    </form>
+  </div>
+</div>
