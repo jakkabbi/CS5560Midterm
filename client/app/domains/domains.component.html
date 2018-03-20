@@ -22,7 +22,9 @@
           <tr *ngIf="domain.user===auth.currentUser.username">
             <td>{{domain.domainName}}</td>
             <td>
-              <button class="btn btn-sm btn-primary" (click)="enableEditing(domain)"><i class="fa fa-pencil"></i> Edit</button>
+              <a routerLink="/pairs" class="nav-link" routerLinkActive="active" *ngIf="auth.loggedIn">Pairs</a>
+                <!-- <button class="btn btn-sm btn-primary" (click)="enableEditing(pairs)"><i class="fa fa-pencil"></i> Pairs</button> -->
+              <!-- </a> -->
               <button class="btn btn-sm btn-danger" (click)="deleteDomain(domain)"><i class="fa fa-trash"></i> Delete</button>
             </td>
           </tr>

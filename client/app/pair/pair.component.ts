@@ -20,7 +20,7 @@ export class PairComponent implements OnInit {
 
   addPairForm: FormGroup;
   // user = new FormControl('');
-  domainName = new FormControl('', Validators.required);
+  domainName = new FormControl('');
   username = new FormControl('', Validators.required);
   password = new FormControl('', Validators.required);
   constructor(private pairService: PairService,
