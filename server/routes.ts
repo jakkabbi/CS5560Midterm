@@ -29,7 +29,7 @@ export default function setRoutes(app) {
   router.route('/pair/:id').get(pairCtrl.get);
   router.route('/pair/:id').put(pairCtrl.update);
   router.route('/pair/:id').delete(pairCtrl.delete);
-
+  router.route('/pair/:domainID').delete(pairCtrl.deleteMany);
   // Users
   router.route('/login').post(userCtrl.login);
   router.route('/users').get(userCtrl.getAll);

@@ -25,7 +25,7 @@ export class RegisterComponent implements OnInit {
   ]);
   password = new FormControl('', [
     Validators.required,
-    Validators.minLength(6)
+    Validators.minLength(4)
   ]);
   role = new FormControl('', [
     Validators.required

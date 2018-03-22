@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
+import { DomainService } from '../services/domain.service';
 import { PairService } from '../services/pair.service';
 import { ToastComponent } from '../shared/toast/toast.component';
 import { Pair } from '../shared/models/pair.model';

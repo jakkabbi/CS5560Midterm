@@ -2,7 +2,7 @@ import * as mongoose from 'mongoose';
 
 const pairSchema = new mongoose.Schema({
 
-  domainName: String,
+  domainID: String,
   username: String,
   password: String
 });

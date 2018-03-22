@@ -1,6 +1,6 @@
 export class Pair {
   _id?: string;
-  domainName?: string;
+  domainID?: string;
   username?: string;
   password?: string;
 }
