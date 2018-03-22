@@ -23,15 +23,18 @@ export class DomainsComponent implements OnInit {
   pairs: Pair[] = [];
   isLoading = true;
   viewing = false;
-
+  $scope:any;
   addDomainForm: FormGroup;
   addPairForm: FormGroup;
-  user = new FormControl('');
+  currentUser = this.auth.currentUser.username;
+  // user = new FormControl(this.auth.currentUser.username);
   domainName = new FormControl('', Validators.required);
   domainID = new FormControl('');
   username = new FormControl('', Validators.required);
   password = new FormControl('', Validators.required);
+  hidden = true;
 
+  static $inject = ['$scope'];
   constructor(private domainService: DomainService,
               private pairService: PairService,
               private formBuilder: FormBuilder,
@@ -41,18 +44,7 @@ export class DomainsComponent implements OnInit {
   ngOnInit() {
     this.viewing = false;
     this.getDomains();
-    this.addDomainForm = this.formBuilder.group({
-      user: this.auth.currentUser.username,
-      domainName: this.domainName
-    });
-    this.addPairForm = this.formBuilder.group({
-      domainID: this.domain._id,
-      username: this.username,
-      password: this.password
-    })
-    // $scope.$apply(function(){
-    // console.log("Dropdown loaded");
-    // });
+    this.resetDomainForm();
   }
 
   getDomains() {
@@ -67,21 +59,60 @@ export class DomainsComponent implements OnInit {
 
   }
 
+  resetDomainForm(){
+    this.domainName = new FormControl('', Validators.required);
+
+    this.addDomainForm = this.formBuilder.group({
+      user: this.currentUser,
+      domainName: this.domainName
+    });
+  }
+
+  resetPairForm() {
+    this.username = new FormControl('', Validators.required);
+    this.password = new FormControl('', Validators.required);
+
+    this.addPairForm = this.formBuilder.group({
+      domainID: this.domain._id,
+      username: this.username,
+      password: this.password
+    });
+    console.log(this.addPairForm.value);
+  }
+
   addDomain() {
     this.domainService.addDomain(this.addDomainForm.value).subscribe(
       res => {
         this.domains.push(res);
-        this.addDomainForm.reset();
+        this.resetDomainForm();
         this.toast.setMessage('item added successfully.', 'success');
       },
       error => console.log(error)
     );
+    console.log(this.addDomainForm.value);
+    this.getDomains();
+  }
+
+  addPair() {
+    this.pairService.addPair(this.addPairForm.value).subscribe(
+      res => {
+        this.viewing = true;
+        console.log(this.addPairForm.value);
+        this.pairs.push(res);
+        this.resetPairForm();
+        this.toast.setMessage('item added successfully.', 'success');
+      },
+      error => console.log(error)
+    );
+    console.log(this.addPairForm.value);
+    this.getPairs();
   }
 
   viewPairs(domain: Domain) {
     this.viewing = true;
     this.domain = domain;
     this.getPairs();
+    this.resetPairForm();
   }
 
   cancelEditing() {
@@ -89,14 +120,14 @@ export class DomainsComponent implements OnInit {
     this.domain = new Domain();
     this.toast.setMessage('item editing cancelled.', 'warning');
     // reload the domains to reset the editing
-    this.getDomains();
+    this.ngOnInit();
   }
 
   browseDomain(domain: Domain) {
     this.getPairs();
     this.domainService.getDomain(domain).subscribe(
       () => {
-        this.viewing = false;
+        this.viewing = true;
         this.domain = domain;
         this.toast.setMessage('item edited successfully.', 'success');
       },
@@ -117,24 +148,12 @@ export class DomainsComponent implements OnInit {
     }
   }
 
-  addPair() {
-    this.pairService.addPair(this.addPairForm.value).subscribe(
-      res => {
-        this.pairs.push(res);
-        this.addPairForm.reset();
-        this.toast.setMessage('item added successfully.', 'success');
-      },
-      error => console.log(error)
-    );
-  }
-
   getPairs() {
     this.pairService.getPairs().subscribe(
       data => this.pairs = data,
       error => console.log(error),
       () => this.isLoading = false
     );
-
   }
 
   deletePair(pair: Pair) {
@@ -148,6 +167,13 @@ export class DomainsComponent implements OnInit {
         error => console.log(error)
       );
     }
+  }
+
+  showPassword(){
+    if(this.hidden)
+      this.hidden = false;
+    else
+      this.hidden = true;
   }
 
 }

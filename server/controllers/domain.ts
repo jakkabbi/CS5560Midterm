@@ -7,7 +7,6 @@ export default class DomainCtrl extends BaseCtrl {
 
   delete = (req, res) => {
     console.log(req.params.id);
-    Pair.remove({ domainID: req.params.id });
     this.model.findOneAndRemove({ _id: req.params.id }, (err) => {
       if (err) { return console.error(err); }
       res.sendStatus(200);
