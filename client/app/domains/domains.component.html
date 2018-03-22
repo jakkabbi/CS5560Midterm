@@ -5,10 +5,13 @@
 <div class="card mb-3" *ngIf="!isLoading">
   <h4 class="card-header">Current domains for {{auth.currentUser.username}}</h4>
   <div class="card-body">
-      <select ngMdoel (ngModelChange)="viewPairs($domain)" class="form-control">
-        <ng-container *ngIf="domain.user===auth.currentUser.username">
-            <option *ngFor="let domain of domains" value="domain.domainName">{{domain.domainName}}
-            </option>
+      <select class="custom-select" name="domainName" ng-change="viewPairs(domain)" >
+        <ng-container *ngFor="let domain of domains">
+          <ng-container *ngIf="domain.user===auth.currentUser.username">
+            <option value="domainName" (click)="viewPairs(domain)">{{domain.domainName}}</option>
+            <!-- <option value="user">User</option> -->
+            <!-- <option value="admin">Admin</option> -->
+          </ng-container>
         </ng-container>
       </select>
     <table class="table table-bordered">
@@ -40,59 +43,59 @@
         </ng-container>
       </tbody>
 
-      <tbody *ngIf="viewing">
-        <ng-container *ngFor="let pair of pairs">
-            <tr>
-          <tr *ngIf="pair.domainID===domain._id">
-                <ng-container *ngIf="hidden">
-                  <td>
-                    <input class="form-control mr-2" type="password" name="username" [(ngModel)]="pair.username" value="pair.username">
-                  </td>
-                  <td>
-                    <input class="form-control mr-2" type="password" name="password" [(ngModel)]="pair.password" value="pair.password">
-                  </td>
+              <tbody *ngIf="viewing">
+                <ng-container *ngFor="let pair of pairs">
+                    <tr>
+                  <tr *ngIf="pair.domainID===domain._id">
+                        <ng-container *ngIf="hidden">
+                          <td>
+                            <input class="form-control mr-2" type="password" name="username" [(ngModel)]="pair.username" value="pair.username">
+                          </td>
+                          <td>
+                            <input class="form-control mr-2" type="password" name="password" [(ngModel)]="pair.password" value="pair.password">
+                          </td>
+                        </ng-container>
+                        <ng-container *ngIf="!hidden">
+                          <td>
+                            <input class="form-control mr-2" type="text" name="username" [(ngModel)]="pair.username" value="pair.username">
+                          </td>
+                          <td>
+                            <input class="form-control mr-2" type="text" name="password" [(ngModel)]="pair.password" value="pair.password">
+                          </td>
+                        </ng-container>
+                        <td>
+                          <button class="btn btn-sm btn-primary" (click)="showPassword()">Show/Hide</button>
+                          <button class="btn btn-sm btn-danger" (click)="deletePair(pair)"><i class="fa fa-trash"></i> Delete</button>
+                        </td>
+                  </tr>
                 </ng-container>
-                <ng-container *ngIf="!hidden">
-                  <td>
-                    <input class="form-control mr-2" type="text" name="username" [(ngModel)]="pair.username" value="pair.username">
-                  </td>
-                  <td>
-                    <input class="form-control mr-2" type="text" name="password" [(ngModel)]="pair.password" value="pair.password">
-                  </td>
-                </ng-container>
-                <td>
-                  <button class="btn btn-sm btn-primary" (click)="showPassword()">Show/Hide</button>
-                  <button class="btn btn-sm btn-danger" (click)="deletePair(pair)"><i class="fa fa-trash"></i> Delete</button>
-                </td>
-          </tr>
-        </ng-container>
-        <tr >
-          <td colspan="4"> <button class="btn btn-sm btn-warning" (click)="cancelEditing()"><i class="fa fa-times"></i> Cancel</button></td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
+                <tr >
+                  <td colspan="4"> <button class="btn btn-sm btn-warning" (click)="cancelEditing()"><i class="fa fa-times"></i> Cancel</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
 
-<div class="card" *ngIf="!viewing">
-  <h4 class="card-header">Add new domain</h4>
-  <div class="card-body">
-    {{this.auth.currentUser.username}}
-    <form class="form-inline" [formGroup]="addDomainForm" (ngSubmit)="addDomain()">
-      <input class="form-control mr-2" type="text" name="domainName" formControlName="domainName" text='' placeholder="Domain Name">
-      <button class="btn btn-primary" type="input" [disabled]="!addDomainForm.valid"><i class="fa fa-floppy-o"></i> Add</button>
-    </form>
-  </div>
-</div>
+        <div class="card" *ngIf="!viewing">
+          <h4 class="card-header">Add new domain</h4>
+          <div class="card-body">
+            {{this.auth.currentUser.username}}
+            <form class="form-inline" [formGroup]="addDomainForm" (ngSubmit)="addDomain()">
+              <input class="form-control mr-2" type="text" name="domainName" formControlName="domainName" text='' placeholder="Domain Name">
+              <button class="btn btn-primary" type="input" [disabled]="!addDomainForm.valid"><i class="fa fa-floppy-o"></i> Add</button>
+            </form>
+          </div>
+        </div>
 
-<div class="card" *ngIf="viewing">
-  <h4 class="card-header">Add new Username-Password Pair</h4>
-  <div class="card-body">
-    <form class="form-inline" [formGroup]="addPairForm" (ngSubmit)="addPair()">
-      <!-- <input class="form-control mr-2" type="text" name="domainID" formControlName="domainID" value={{domain._id}}> -->
-      <input class="form-control mr-2" type="text" name="username" formControlName="username" placeholder="Domain Username" required>
-      <input class="form-control mr-2" type="text" name="password" formControlName="password" placeholder="Domain Password" required>
-      <button class="btn btn-primary" type="submit" [disabled]="!addPairForm.valid"><i class="fa fa-floppy-o"></i> Add</button>
-    </form>
-  </div>
-</div>
+        <div class="card" *ngIf="viewing">
+          <h4 class="card-header">Add new Username-Password Pair</h4>
+          <div class="card-body">
+            <form class="form-inline" [formGroup]="addPairForm" (ngSubmit)="addPair()">
+              <!-- <input class="form-control mr-2" type="text" name="domainID" formControlName="domainID" value={{domain._id}}> -->
+              <input class="form-control mr-2" type="text" name="username" formControlName="username" placeholder="Domain Username" required>
+              <input class="form-control mr-2" type="text" name="password" formControlName="password" placeholder="Domain Password" required>
+              <button class="btn btn-primary" type="submit" [disabled]="!addPairForm.valid"><i class="fa fa-floppy-o"></i> Add</button>
+            </form>
+          </div>
+        </div>

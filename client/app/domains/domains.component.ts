@@ -27,7 +27,7 @@ export class DomainsComponent implements OnInit {
   addDomainForm: FormGroup;
   addPairForm: FormGroup;
   currentUser = this.auth.currentUser.username;
-  // user = new FormControl(this.auth.currentUser.username);
+  user = new FormControl(this.auth.currentUser.username);
   domainName = new FormControl('', Validators.required);
   domainID = new FormControl('');
   username = new FormControl('', Validators.required);
@@ -61,9 +61,10 @@ export class DomainsComponent implements OnInit {
 
   resetDomainForm(){
     this.domainName = new FormControl('', Validators.required);
-
+    this.user = new FormControl(this.auth.currentUser.username);
+    
     this.addDomainForm = this.formBuilder.group({
-      user: this.currentUser,
+      user: this.user,
       domainName: this.domainName
     });
   }
