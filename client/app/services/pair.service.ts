@@ -10,11 +10,11 @@ export class PairService {
   constructor(private http: HttpClient) { }
 
   getPairs(): Observable<Pair[]> {
-    return this.http.get<Pair[]>('/api/pair');
+    return this.http.get<Pair[]>('/api/pairs');
   }
 
   countPairs(): Observable<number> {
-    return this.http.get<number>('/api/pair/count');
+    return this.http.get<number>('/api/pairs/count');
   }
 
   addPair(pair: Pair): Observable<Pair> {

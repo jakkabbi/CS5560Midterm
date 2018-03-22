@@ -8,7 +8,18 @@
     <table class="table table-bordered">
       <thead class="thead-light">
         <tr>
-          <th scope="col">Domain Name</th>
+          <th scope="col">Domain Name
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fa fa-black-tie"></i></span>
+              </div>
+              <select class="custom-select" name="domainName" formControlName="domainName">
+                <option value="" selected disabled>Domain Name</option>
+                <option value="user">User</option>
+                <option value="admin">Admin</option>
+              </select>
+            </div>
+          </th>
           <th scope="col">Actions</th>
         </tr>
       </thead>
@@ -29,17 +40,6 @@
             </td>
           </tr>
         </ng-container>
-      </tbody>
-      <tbody *ngIf="isEditing">
-        <tr>
-          <td colspan="4">
-            <form class="form-inline" #form="ngForm" (ngSubmit)="editDomain(domain)">
-              <input class="form-control mr-2" type="text" name="domainName" [(ngModel)]="domain.domainName" placeholder="Domain Name" required>
-              <button class="btn btn-sm btn-primary mr-2" type="submit" [disabled]="!form.form.valid"><i class="fa fa-floppy-o"></i> Save</button>
-              <button class="btn btn-sm btn-warning" (click)="cancelEditing()"><i class="fa fa-times"></i> Cancel</button>
-            </form>
-          </td>
-        </tr>
       </tbody>
     </table>
   </div>

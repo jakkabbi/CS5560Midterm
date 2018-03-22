@@ -19,7 +19,6 @@ export class PairComponent implements OnInit {
   isEditing = false;
 
   addPairForm: FormGroup;
-  // user = new FormControl('');
   domainName = new FormControl('');
   username = new FormControl('', Validators.required);
   password = new FormControl('', Validators.required);
@@ -31,7 +30,6 @@ export class PairComponent implements OnInit {
   ngOnInit() {
     this.getPairs();
     this.addPairForm = this.formBuilder.group({
-      // user: this.auth.currentUser.username,
       domainName: this.domainName,
       username: this.username,
       password: this.password

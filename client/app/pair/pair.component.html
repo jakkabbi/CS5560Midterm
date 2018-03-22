@@ -8,8 +8,9 @@
     <table class="table table-bordered">
       <thead class="thead-light">
         <tr>
+          <th scope="col">Username(s)</th>
+          <th scope="col">Password(s)</th>
           <th scope="col">Actions</th>
-          <th scope="col">Domain Name</th>
         </tr>
       </thead>
       <tbody *ngIf="pairs.length === 0">
@@ -19,15 +20,15 @@
       </tbody>
       <tbody *ngIf="!isEditing">
         <ng-container *ngFor="let pair of pairs">
-          <!-- <tr *ngIf="pair.user===auth.currentUser.username"> -->
-            <!-- <td>{{pair.domainName}}</td> -->
+          <tr><!-- <tr *ngIf="pair.domainName===auth.currentUser.username"> -->
+            <td>{{pair.domainName}}</td>
             <td>{{pair.username}}</td>
             <td>{{pair.password}}</td>
             <td>
-              <button class="btn btn-sm btn-primary" (click)="enableEditing(pair)"><i class="fa fa-pencil"></i> Edit</button>
+              <button class="btn btn-sm btn-primary" (click)="enableEditing(pair)"><i class="fa fa-pencil"></i> Show/Hide</button>
               <button class="btn btn-sm btn-danger" (click)="deletePair(pair)"><i class="fa fa-trash"></i> Delete</button>
             </td>
-          <!-- </tr> -->
+          </tr>
         </ng-container>
       </tbody>
       <tbody *ngIf="isEditing">
