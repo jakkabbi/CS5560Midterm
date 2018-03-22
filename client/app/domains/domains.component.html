@@ -6,10 +6,10 @@
   <h4 class="card-header">Current domains for {{auth.currentUser.username}}</h4>
   <div class="card-body">
       <select ngMdoel (ngModelChange)="viewPairs($domain)" class="form-control">
-        <!-- <ng-container *ngIf="domain.user===auth.currentUser.username"> -->
+        <ng-container *ngIf="domain.user===auth.currentUser.username">
             <option *ngFor="let domain of domains" value="domain.domainName">{{domain.domainName}}
             </option>
-        <!-- </ng-container> -->
+        </ng-container>
       </select>
     <table class="table table-bordered">
       <thead class="thead-light">
